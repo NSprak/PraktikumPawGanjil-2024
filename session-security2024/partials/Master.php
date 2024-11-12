@@ -13,7 +13,7 @@
 <body>
     <?php include __DIR__ . '/nav.php' ?>
 
-    <div class="container mx-auto my-6 px-8">
+    <div class="container mx-auto my-6  ">
         <?php 
             if (isset($content)) {
                 echo $content;
@@ -24,5 +24,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+
+
 </body>
 </html>
