@@ -1,11 +1,58 @@
 <?php ob_start(); ?>
 
+<?php 
+    session_start();
+    require_once "partials/Config.php";
+
+    if(isset($_SESSION['user'])) {
+        echo "<script>
+            alert('anda sudah login');
+            window.location.href = 'Index.php';
+        </script>";
+    }
+
+    if(isset($_POST['submit'])) {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+
+        $result = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
+        $users = mysqli_fetch_assoc($result);
+
+        if ($users > 0) {
+            if($users['password'] == md5($password)) {
+                $_SESSION['user'] = $users;
+                if($users['level'] == 'admin'){
+                    $_SESSION['level'] = 'admin' ;
+                    echo "<script>
+                    alert('Login Berhasil sebagai admin');
+                    window.location.href = 'Admin/Index.php';
+                    </script>";
+                }else {
+                    $_SESSION['level'] = 'user' ;
+                    echo "<script>
+                    alert('Login Berhasil');
+                    window.location.href = 'Index.php';
+                    </script>"; }
+            }
+        }else {
+            echo "<script>
+            alert('Username tidak ditemukan');
+            window.location.href = 'Login.php';
+            </script>";
+        }
+
+    }
+
+
+?>
+
+
 
 <div class="flex items-center justify-center min-h-screen">
         <div class="w-full max-w-md p-8 space-y-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white">Login to Your Account</h2>
             
-            <form action="process_login.php" method="POST" class="space-y-6">
+            <form action="" method="POST" class="space-y-6">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
                     <input type="text" name="username" id="username" required
@@ -27,7 +74,7 @@
                     <a href="#" class="text-sm text-blue-600 hover:underline dark:text-blue-500">Forgot password?</a>
                 </div>
 
-                <button type="submit"
+                <button type="submit" name="submit"
                         class="w-full px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                     Sign in
                 </button>

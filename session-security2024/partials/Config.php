@@ -1,4 +1,4 @@
 
 <?php 
-    // $conn = mysqli_connect('localhost', 'root', '', 'modul-8');
+    $conn = mysqli_connect('localhost', 'root', '', 'modul-6');
 ?>

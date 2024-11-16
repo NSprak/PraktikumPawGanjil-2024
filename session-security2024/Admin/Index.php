@@ -1,6 +1,29 @@
 <?php ob_start(); ?>
 
 
+<?php 
+    session_start();
+    require_once "../partials/Config.php";
+    echo $_SESSION['level'];
+    if(!isset($_SESSION['user'])) {
+        echo "<script>
+            alert('anda harus login dulu');
+            window.location.href = '../Login.php';
+        </script>";
+    }else {
+        $userid = $_SESSION['user']['id_user'];
+        $result = mysqli_query($conn,"SELECT * FROM users WHERE id_user = $userid");
+        $users = mysqli_fetch_assoc($result);
+        if($_SESSION['level'] != 'admin'){
+            echo "<script>
+            alert('anda tidak boleh akses halaman ini');
+            window.location.href = '../Login.php';
+            </script>";
+        }
+    }
+
+
+?>
 
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
